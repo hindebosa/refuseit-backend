@@ -4,10 +4,26 @@ import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { IResponse } from 'src/common/interfaces/response.interface';
 import { UserDto } from 'src/user/dto/user.dto';
 import { ResponseError, ResponseSuccess } from 'src/common/dto/response.dto';
+import { Login } from './interfaces/login.interface';
 
 @Controller('auth')
 export class AuthController {
     constructor(private readonly authService: AuthService){}
+
+    
+    
+    @Post('email/login')
+    @HttpCode(HttpStatus.OK)
+    public async login(@Body() login: Login): Promise<IResponse> {
+      try {
+        var response = await this.authService.validateLogin(login.email, login.password);
+        return new ResponseSuccess("LOGIN.SUCCESS", response);
+      } catch(error) {
+        return new ResponseError("LOGIN.ERROR", error);
+      }
+    }
+
+    
 
     @Post('email/register')
     @HttpCode(HttpStatus.OK)
@@ -33,13 +49,43 @@ export class AuthController {
       return null;
     }
 
-    // @Get('email/verify/:token')
-    // public async verifyEmail(@Param() params): Promise<IResponse> {
+    @Get('email/verify/:token')
+    public async verifyEmail(@Param() params): Promise<IResponse> {
+      try {
+        var isEmailVerified = await this.authService.verifyEmail(params.token);
+        return new ResponseSuccess("LOGIN.EMAIL_VERIFIED", isEmailVerified);
+      } catch(error) {
+        return new ResponseError("LOGIN.ERROR", error);
+      }
+    }
+
+    @Get('email/resend-verification/:email')
+    public async sendEmailVerification(@Param() params): Promise<IResponse> {
+      try {
+        await this.authService.createEmailToken(params.email);
+        var isEmailSent = await this.authService.sendEmailVerification(params.email);
+        if(isEmailSent){
+          return new ResponseSuccess("LOGIN.EMAIL_RESENT", null);
+        } else {
+          return new ResponseError("REGISTRATION.ERROR.MAIL_NOT_SENT");
+        }
+      } catch(error) {
+        return new ResponseError("LOGIN.ERROR.SEND_EMAIL", error);
+      }
+    }
+
+    // @Get('email/forgot-password/:email')
+    // public async sendEmailForgotPassword(@Param() params): Promise<IResponse> {
     //   try {
-    //     var isEmailVerified = await this.authService.verifyEmail(params.token);
-    //     return new ResponseSuccess("LOGIN.EMAIL_VERIFIED", isEmailVerified);
+    //     var isEmailSent = await this.authService.sendEmailForgotPassword(params.email);
+    //     if(isEmailSent){
+    //       return new ResponseSuccess("LOGIN.EMAIL_RESENT", null);
+    //     } else {
+    //       return new ResponseError("REGISTRATION.ERROR.MAIL_NOT_SENT");
+    //     }
     //   } catch(error) {
-    //     return new ResponseError("LOGIN.ERROR", error);
+    //     return new ResponseError("LOGIN.ERROR.SEND_EMAIL", error);
     //   }
     // }
+
 }

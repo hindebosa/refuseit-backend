@@ -6,6 +6,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter';
+import { JWTService } from './jwt.service';
 
 @Module({ imports :[MailerModule.forRootAsync({
     useFactory: async (config: ConfigService) => ({
@@ -31,5 +32,5 @@ import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter';
     inject: [ConfigService],
   }),], 
     controllers: [AuthController],
-    providers: [AuthService,PrismaService,ConfigService]})
+    providers: [AuthService,PrismaService,ConfigService,JWTService]})
 export class AuthModule {}
