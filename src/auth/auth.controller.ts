@@ -16,7 +16,7 @@ export class AuthController {
     @HttpCode(HttpStatus.OK)
     public async login(@Body() login: Login): Promise<IResponse> {
       try {
-        var response = await this.authService.validateLogin(login.email, login.password);
+        var response = await this.authService.validateLogin(login.email, login.hash);
         return new ResponseSuccess("LOGIN.SUCCESS", response);
       } catch(error) {
         return new ResponseError("LOGIN.ERROR", error);

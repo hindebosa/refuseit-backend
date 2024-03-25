@@ -108,8 +108,8 @@ export class AuthService {
       const sent = await this.mailerService.sendMail({
         to: email,
         from: 'RefuseIt',
-        subject: 'Welcome to Nice App! Confirm your Email',
-        html: signupEmailTemplate(model.email, 'heydhhd', 'asnasdnnasd'), // html body
+        subject: 'Welcome to RefuseIT App! Confirm your Email',
+        html: signupEmailTemplate(model.email, model.email,`http://localhost:3001/auth/verify/${model.emailToken}` ), 
       });
       return sent;
     } else {
