@@ -11,24 +11,36 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  email    String  @unique
-  hash     String
-  hashedRt String?
-  validEmail Boolean?
-  name  String
-  surname  String
-  phone  String
+  id           Int       @id @default(autoincrement())
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  email        String    @unique
+  hash         String
+  hashedRt     String?
+  validEmail   Boolean?
+  name         String
+  surname      String
+  phone        String
   birthdaydate DateTime?
-  role String @default("driver")
-
+  role         String    @default("driver")
+ 
   @@map("users")
 }
 
 model EmailVerification {
-   email String @unique
-   emailToken String @unique
-   timestamp DateTime
+  email      String   @unique
+  emailToken String   @unique
+  timestamp  DateTime
+}
+
+model Product {
+  id          Int    @id @default(autoincrement())
+  name        String
+  description String
+  amount      String
+  price       String
+  coordinates Json
+
+
+  @@map("products")
 }

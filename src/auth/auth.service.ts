@@ -102,14 +102,13 @@ export class AuthService {
     var model = await this.prisma.emailVerification.findUnique({
       where: { email },
     });
-    console.log(model);
-
+  
     if (model && model.emailToken) {
       const sent = await this.mailerService.sendMail({
         to: email,
         from: 'RefuseIt',
         subject: 'Welcome to RefuseIT App! Confirm your Email',
-        html: signupEmailTemplate(model.email, model.email,`http://localhost:3001/auth/verify/${model.emailToken}` ), 
+        html: signupEmailTemplate(model.email, model.email,`http://localhost:3000/auth/verify/${model.emailToken}` ), 
       });
       return sent;
     } else {

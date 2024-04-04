@@ -8,18 +8,6 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123
       POSTGRES_DB: nestjs
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: refuseit-backend
-    environment:
-      - PORT=${PORT}
-    ports:
-      - '3000:3000'
-    depends_on:
-      - db
-    volumes:
-      - ./src:/app/src
+
 
 

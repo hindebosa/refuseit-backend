@@ -9,6 +9,7 @@ import { ConfigModule } from '@nestjs/config';
 import { PrismaService } from './prisma/prisma.service';
 import { ProductsModule } from './products/products.module';
 import { JWTService } from './auth/jwt.service';
+import { ProductsService } from './products/products.service';
 
 
 @Module({
@@ -16,6 +17,6 @@ import { JWTService } from './auth/jwt.service';
     isGlobal: true, // no need to import into other modules
   }), ProductsModule,],
   controllers: [AppController, AuthController],
-  providers: [AppService, AuthService,PrismaService,JWTService],
+  providers: [AppService, AuthService,PrismaService,JWTService,ProductsService],
 })
 export class AppModule {}
