@@ -11,10 +11,10 @@ datasource db {
 }
 
 model User {
-  id           Int       @id @default(autoincrement())
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  email        String    @unique
+  id           Int          @id @default(autoincrement())
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  email        String       @unique
   hash         String
   hashedRt     String?
   validEmail   Boolean?
@@ -22,9 +22,22 @@ model User {
   surname      String
   phone        String
   birthdaydate DateTime?
-  role         String    @default("driver")
- 
+  transporter  Transporter?
+  role         Role         @default(USER)
+
   @@map("users")
+}
+
+model Transporter {
+  id                 Int       @id @default(autoincrement())
+  name               String    @unique
+  nameOfVehicle      String
+  yearOfManufacture  DateTime?
+  registrationNumber String
+  user               User      @relation(fields: [userId], references: [id])
+  userId             Int       @unique
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
 }
 
 model EmailVerification {
@@ -34,13 +47,19 @@ model EmailVerification {
 }
 
 model Product {
-  id          Int    @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   name        String
   description String
   amount      String
   price       String
   coordinates Json
-
+ 
 
   @@map("products")
+}
+
+enum Role {
+  USER
+  DRIVER
+  ADMIN
 }
