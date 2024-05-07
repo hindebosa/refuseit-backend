@@ -10,12 +10,13 @@ import { PrismaService } from './prisma/prisma.service';
 import { ProductsModule } from './products/products.module';
 import { JWTService } from './auth/jwt.service';
 import { ProductsService } from './products/products.service';
+import { TranspoterModule } from './transpoter/transpoter.module';
 
 
 @Module({
   imports: [AuthModule, UserModule,ConfigModule.forRoot({
     isGlobal: true, // no need to import into other modules
-  }), ProductsModule,],
+  }), ProductsModule, TranspoterModule,],
   controllers: [AppController, AuthController],
   providers: [AppService, AuthService,PrismaService,JWTService,ProductsService],
 })
